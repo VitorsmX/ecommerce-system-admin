@@ -40,7 +40,7 @@ export async function GET (
 
 export async function DELETE(
     req: Request,
-    { params }: { params: { productId: string, storeId: string } }
+    { params }: { params: { storeId: string, productId: string } }
   ) {
     try {
       const { userId } = auth();
@@ -64,7 +64,7 @@ export async function DELETE(
         return new NextResponse("Unauthorized", { status: 405 });
       }
   
-      const product = await prismadb.product.delete({
+      const product = await prismadb.product.deleteMany({
         where: {
           id: params.productId
         },
