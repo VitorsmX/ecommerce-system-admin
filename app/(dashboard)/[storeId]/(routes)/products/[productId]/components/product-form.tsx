@@ -104,14 +104,14 @@ export const ProductForm: React.FC<ProductFormProps> = ({
             router.refresh();
             router.push(`/${params.storeId}/products`)
             toast.success("Produto deletado.");
-        } catch (error) {
+        } catch (error: any) {
             toast.error("Algo deu errado.")
         } finally {
             setLoading(false)
             setOpen(false)
         }
     }
-
+    
     return (
         <>
             <AlertModal

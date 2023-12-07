@@ -29,27 +29,26 @@ export const CellAction: React.FC<CellActionProps> = ({
         toast.success("ID do tamanho copiado para a área de transferência.")
     };
 
-    const onDelete = async () => {
+    const onConfirm = async () => {
         try {
-            setLoading(true)
-            await axios.delete(`/api/${params.storeId}/sizes/${data.id}`)
-            router.refresh();
-            router.push(`/${params.storeId}/sizes`);
-            toast.success("Tamanho deletado.");
+          setLoading(true);
+          await axios.delete(`/api/${params.storeId}/sizes/${data.id}`);
+          toast.success('Tamanho Deletado');
+          router.refresh();
         } catch (error) {
-            toast.error("Certique-se de que você removeu todas os produtos usando esse tamanho primeiro.")
+          toast.error('Certique-se de que você removeu todos os produtos usando esse tamanho primeiro');
         } finally {
-            setLoading(false)
-            setOpen(false)
+          setOpen(false);
+          setLoading(false);
         }
-    }
+      };
 
     return (
         <>
             <AlertModal 
                 isOpen={open}
                 onClose={() => setOpen(false)}
-                onConfirm={onDelete}
+                onConfirm={onConfirm}
                 loading={loading}
             />
             <DropdownMenu>

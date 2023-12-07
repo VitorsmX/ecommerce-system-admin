@@ -17,39 +17,37 @@ interface CellActionProps {
 export const CellAction: React.FC<CellActionProps> = ({
     data
 }) => {
-
-    const router = useRouter();
-    const params = useParams();
-
     const [loading, setLoading] = useState(false);
     const [open, setOpen] = useState(false);
-
+    const router = useRouter();
+    const params = useParams();
+    
+    
+    const onConfirm = async () => {
+        try {
+            setLoading(true);
+            await axios.delete(`/api/${params.storeId}/products/${data.id}`);
+            toast.success('Produto deletado.');
+            router.refresh();
+        } catch (error) {
+            toast.error('Algo deu Errado');
+        } finally {
+            setLoading(false);
+            setOpen(false);
+        }
+    };
+    
     const onCopy = (id: string) => {
         navigator.clipboard.writeText(id);
         toast.success("ID do produto copiado para a área de transferência.")
     };
-
-    const onDelete = async () => {
-        try {
-            setLoading(true)
-            await axios.delete(`/api/${params.storeId}/products/${data.id}`)
-            router.refresh();
-            router.push(`/${params.storeId}/products`);
-            toast.success("Produto deletado.");
-        } catch (error) {
-            toast.error("Algo deu errado.")
-        } finally {
-            setLoading(false)
-            setOpen(false)
-        }
-    }
-
+    
     return (
         <>
             <AlertModal 
                 isOpen={open}
                 onClose={() => setOpen(false)}
-                onConfirm={onDelete}
+                onConfirm={onConfirm}
                 loading={loading}
             />
             <DropdownMenu>

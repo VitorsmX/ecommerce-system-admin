@@ -29,27 +29,26 @@ export const CellAction: React.FC<CellActionProps> = ({
         toast.success("ID do Painel Publicitário copiado para a área de transferência.")
     };
 
-    const onDelete = async () => {
+    const onConfirm = async () => {
         try {
-            setLoading(true)
-            await axios.delete(`/api/${params.storeId}/billboards/${data.id}`)
-            router.refresh();
-            router.push(`/${params.storeId}/billboards`);
-            toast.success("Painel deletado.");
+          setLoading(true);
+          await axios.delete(`/api/${params.storeId}/billboards/${data.id}`);
+          toast.success('Painel deletado.');
+          router.refresh();
         } catch (error) {
-            toast.error("Certique-se de que você removeu todas as categorias usando esse painel primeiro.")
+          toast.error('Certique-se de que você removeu todas as categorias usando esse painel primeiro.');
         } finally {
-            setLoading(false)
-            setOpen(false)
+          setOpen(false);
+          setLoading(false);
         }
-    }
+      };
 
     return (
         <>
             <AlertModal 
                 isOpen={open}
                 onClose={() => setOpen(false)}
-                onConfirm={onDelete}
+                onConfirm={onConfirm}
                 loading={loading}
             />
             <DropdownMenu>
