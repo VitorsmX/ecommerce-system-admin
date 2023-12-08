@@ -1,6 +1,8 @@
 "use client"
 
 import { ColumnDef } from "@tanstack/react-table"
+import { CellAction } from "./cell-action";
+import { OrderItem } from "@prisma/client";
 
 export type OrderColumn = {
   id: string;
@@ -10,6 +12,7 @@ export type OrderColumn = {
   totalPrice: string;
   products: string;
   createdAt: string;
+  orderItems: OrderItem[];
 }
 
 export const columns: ColumnDef<OrderColumn>[] = [
@@ -32,5 +35,12 @@ export const columns: ColumnDef<OrderColumn>[] = [
   {
     accessorKey: "isPaid",
     header: "Pago",
+  },
+  {
+    accessorKey: "orderItems"
+  },
+  {
+    id: "actions",
+    cell: ({ row }) => <CellAction data={row.original} />
   }
 ]

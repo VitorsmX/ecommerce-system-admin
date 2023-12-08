@@ -36,8 +36,8 @@ const OrdersPage = async ({
             return total + Number(item.product.price)
         }, 0)),
         isPaid: item.isPaid,
-        createdAt: format(item.createdAt, "MMMM do, yyyy")
-
+        createdAt: format(item.createdAt, "MMMM do, yyyy"),
+        orderItems: item.orderItems.map((orderItem) => orderItem)
     }))
 
     return (
