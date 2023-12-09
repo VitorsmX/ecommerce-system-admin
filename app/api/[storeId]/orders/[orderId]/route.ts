@@ -57,7 +57,7 @@ export async function POST(
         return NextResponse.json(order)
 
     } catch (error) {
-        console.log(`[ORDER_POST(DELETE)] ${error}`, error);
-        return new NextResponse("Internal error", { status: 500 })
+        console.log(`[ORDER_POST(DELETE)`, error);
+        return new NextResponse(`Internal error ${error}`, { status: 500 })
     }
 }
