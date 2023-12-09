@@ -1,4 +1,3 @@
-import { OrderColumn } from "@/app/(dashboard)/[storeId]/(routes)/orders/components/columns";
 import prismadb from "@/lib/prismadb";
 import { auth } from "@clerk/nextjs";
 import { OrderItem } from "@prisma/client";
@@ -19,7 +18,7 @@ export async function POST(
         const { userId } = auth();
         const body = await req.json();
 
-        const { data }: { data: OrderColumn } = body;
+        const { data } = body;
 
         if (!userId) {
             return new NextResponse("Unauthenticated", { status: 401 })
@@ -40,7 +39,7 @@ export async function POST(
             return new NextResponse("Unauthorized", { status: 403 })
         }
 
-        await Promise.all(data.orderItems.map(async (orderItem: OrderItem) => {
+        await Promise.all(data?.map(async (orderItem: OrderItem) => {
             await prismadb.orderItem.deleteMany({
                 where: {
                     productId: orderItem.productId,
