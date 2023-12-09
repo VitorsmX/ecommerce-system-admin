@@ -27,7 +27,7 @@ export const CellAction: React.FC<CellActionProps> = ({
     const onConfirm = async () => {
         try {
           setLoading(true);
-          await axios.post(`/api/${params.storeId}/orders/${data.id}`, data.orderItems);
+          await axios.post(`/api/${params.storeId}/orders/${data.id}`, data);
           toast.success('Pedido deletado');
           router.refresh();
         } catch (error) {

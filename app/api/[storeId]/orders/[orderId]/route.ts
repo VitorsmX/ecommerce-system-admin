@@ -18,7 +18,7 @@ export async function POST(
         const { userId } = auth();
         const body = await req.json();
 
-        const { data } = body;
+        const { orderColumn } = body;
 
         if (!userId) {
             return new NextResponse("Unauthenticated", { status: 401 })
@@ -39,7 +39,7 @@ export async function POST(
             return new NextResponse("Unauthorized", { status: 403 })
         }
 
-        await Promise.all(data?.map(async (orderItem: OrderItem) => {
+        await Promise.all(orderColumn?.orderItems.map(async (orderItem: OrderItem) => {
             await prismadb.orderItem.deleteMany({
                 where: {
                     productId: orderItem.productId,
