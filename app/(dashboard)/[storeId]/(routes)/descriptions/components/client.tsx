@@ -6,15 +6,15 @@ import { useParams, useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Heading } from "@/components/ui/heading"
 import { Separator } from "@/components/ui/separator"
-import { ColorColumn, columns } from "./columns"
+import { DescriptionColumn, columns } from "./columns"
 import { DataTable } from "@/components/ui/data-table"
 import { ApiList } from "@/components/ui/api-list"
 
-interface ColorClientProps {
-    data: ColorColumn[]
+interface DescriptionClientProps {
+    data: DescriptionColumn[]
 }
 
-export const ColorClient: React.FC<ColorClientProps> = ({
+export const DescriptionClient: React.FC<DescriptionClientProps> = ({
     data
 }) => {
     const router = useRouter();
@@ -24,19 +24,19 @@ export const ColorClient: React.FC<ColorClientProps> = ({
         <>
             <div className="flex items-center justify-between">
                 <Heading 
-                    title={`Cores (${data.length})`}
-                    description="Gerencie as cores dos elementos da sua loja"
+                    title={`Descrições (${data.length})`}
+                    description="Gerencie as descrições dos produtos da sua loja"
                 />
-                <Button onClick={() => router.push(`/${params.storeId}/colors/new`)}>
+                <Button onClick={() => router.push(`/${params.storeId}/descriptions/new`)}>
                     <Plus className="mr-2 h-4 w-4"/>
-                    Adicionar Novo
+                    Adicionar Nova
                 </Button>
             </div>
             <Separator />
-            <DataTable searchKey="name" columns={columns} data={data} />
-            <Heading title="API" description="Chamadas de API para as cores" />
+            <DataTable searchKey="description" columns={columns} data={data} />
+            <Heading title="API" description="Chamadas de API para as descrições" />
             <Separator />
-            <ApiList entityName="colors" entityIdName="colorId" />
+            <ApiList entityName="descriptions" entityIdName="descriptionId" />
         </>
     )
 }

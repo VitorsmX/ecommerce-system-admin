@@ -8,26 +8,26 @@ export async function GET (
         {
             params:
             {
-                colorId: string
+                descriptionId: string
             }
         }
 ) {
     try {
 
-        if (!params.colorId) {
-            return new NextResponse("Color id is required", { status: 400 })
+        if (!params.descriptionId) {
+            return new NextResponse("Description id is required", { status: 400 })
         }
 
-        const color = await prismadb.color.findUnique({
+        const description = await prismadb.description.findUnique({
             where: {
-                id: params.colorId,
+                id: params.descriptionId,
             },
         });
 
-        return NextResponse.json(color);
+        return NextResponse.json(description);
 
     } catch (error) {
-        console.log('[COLOR_GET]', error);
+        console.log('[DESCRIPTION_GET]', error);
         return new NextResponse("Internal error", { status: 500 })
     }
 }
@@ -39,7 +39,7 @@ export async function PATCH (
             params:
             {
                 storeId: string,
-                colorId: string
+                descriptionId: string
             }
         }
 ) {
@@ -47,22 +47,18 @@ export async function PATCH (
         const { userId } = auth();
         const body = await req.json();
 
-        const { name, value } = body;
+        const { description } = body;
 
         if (!userId) {
             return new NextResponse("Unauthenticated", { status: 401 })
         }
 
-        if (!name) {
-            return new NextResponse("Name is required", { status: 400 })
+        if (!description) {
+            return new NextResponse("Description is required", { status: 400 })
         }
 
-        if (!value) {
-            return new NextResponse("Value is required", { status: 400 })
-        }
-
-        if (!params.colorId) {
-            return new NextResponse("Color id is required", { status: 400 })
+        if (!params.descriptionId) {
+            return new NextResponse("Description id is required", { status: 400 })
         }
 
         const storeByUserId = await prismadb.store.findFirst({
@@ -76,20 +72,19 @@ export async function PATCH (
             return new NextResponse("Unauthorized", { status: 403 })
         }
 
-        const color = await prismadb.color.updateMany({
+        const descriptionUnique = await prismadb.description.updateMany({
             where: {
-                id: params.colorId,
+                id: params.descriptionId,
             },
             data: {
-                name,
-                value
+                description
             }
         });
 
-        return NextResponse.json(color);
+        return NextResponse.json(descriptionUnique);
 
     } catch (error) {
-        console.log('[COLOR_PATCH]', error);
+        console.log('[DESCRIPTION_PATCH]', error);
         return new NextResponse("Internal error", { status: 500 })
     }
 }
@@ -101,7 +96,7 @@ export async function DELETE(
             params:
             {
                 storeId: string,
-                colorId: string
+                descriptionId: string
             }
         }
 ) {
@@ -112,8 +107,8 @@ export async function DELETE(
             return new NextResponse("Unauthenticated", { status: 401 })
         }
 
-        if (!params.colorId) {
-            return new NextResponse("Color id is required", { status: 400 })
+        if (!params.descriptionId) {
+            return new NextResponse("Description id is required", { status: 400 })
         }
 
         const storeByUserId = await prismadb.store.findFirst({
@@ -127,16 +122,16 @@ export async function DELETE(
             return new NextResponse("Unauthorized", { status: 403 })
         }
 
-        const color = await prismadb.color.deleteMany({
+        const description = await prismadb.description.deleteMany({
             where: {
-                id: params.colorId,
+                id: params.descriptionId,
             },
         });
 
-        return NextResponse.json(color);
+        return NextResponse.json(description);
 
     } catch (error) {
-        console.log('[COLOR_DELETE]', error);
+        console.log('[DESCRIPTION_DELETE]', error);
         return new NextResponse("Internal error", { status: 500 })
     }
 }

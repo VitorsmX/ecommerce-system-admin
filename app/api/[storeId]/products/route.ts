@@ -11,7 +11,7 @@ export async function POST (
         const { userId } = auth();
         const body = await req.json()
 
-        const { name, price, categoryId, colorId, sizeId, images, isFeatured, isArchived } = body;
+        const { name, price, categoryId, brandId, descriptionId, sizeId, images, isFeatured, isArchived } = body;
 
         if (!userId) {
             return new NextResponse("Unauthenticated", { status: 401 })
@@ -37,8 +37,12 @@ export async function POST (
             return new NextResponse("Size id is required", { status: 400 })
         }
 
-        if (!colorId) {
-            return new NextResponse("Color id is required", { status: 400 })
+        if (!brandId) {
+            return new NextResponse("Brand id is required", { status: 400 })
+        }
+
+        if (!descriptionId) {
+            return new NextResponse("Description id is required", { status: 400 })
         }
 
         if (!params.storeId) {
@@ -63,7 +67,8 @@ export async function POST (
                 isFeatured,
                 isArchived,
                 categoryId,
-                colorId,
+                brandId,
+                descriptionId,
                 sizeId,
                 storeId: params.storeId,
                 images: {
@@ -91,7 +96,8 @@ export async function GET (
 
         const { searchParams } = new URL(req.url);
         const categoryId = searchParams.get("categoryId") || undefined
-        const colorId = searchParams.get("colorId") || undefined
+        const brandId = searchParams.get("brandId") || undefined
+        const descriptionId = searchParams.get("descriptionId") || undefined
         const sizeId = searchParams.get("sizeId") || undefined
         const isFeatured = searchParams.get("isFeatured")
         const isArchived = searchParams.get("isArchived")
@@ -104,7 +110,8 @@ export async function GET (
             where: {
                 storeId: params.storeId,
                 categoryId,
-                colorId,
+                brandId,
+                descriptionId,
                 sizeId,
                 isFeatured: isFeatured ? true : undefined,
                 isArchived: isArchived ? true : undefined
@@ -112,7 +119,8 @@ export async function GET (
             include: {
                 images: true,
                 category: true,
-                color: true,
+                brand: true,
+                description: true,
                 size: true
             },
             orderBy: {

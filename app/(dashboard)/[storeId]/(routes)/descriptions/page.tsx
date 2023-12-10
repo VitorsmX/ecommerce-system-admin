@@ -1,16 +1,16 @@
 import { format } from "date-fns"
 
 import prismadb from "@/lib/prismadb";
-import { ColorClient } from "./components/client";
-import { ColorColumn } from "./components/columns";
+import { DescriptionClient } from "./components/client";
+import { DescriptionColumn } from "./components/columns";
 
-const ColorsPage = async ({
+const DescriptionPage = async ({
     params
 }: {
     params: { storeId: string }
 }) => {
 
-    const colors = await prismadb.color.findMany({
+    const descriptions = await prismadb.description.findMany({
         where: {
             storeId: params.storeId
         },
@@ -19,21 +19,19 @@ const ColorsPage = async ({
         }
     });
 
-    const formattedColors: ColorColumn[] = colors.map((item) => ({
+    const formattedDescriptions: DescriptionColumn[] = descriptions.map((item) => ({
         id: item.id,
-        name: item.name,
-        value: item.value,
+        description: item.description,
         createdAt: format(item.createdAt, "MMMM do, yyyy")
-
     }))
 
     return (
         <div className="flex-col">
             <div className="flex-1 space-y-4 p-8 pt-6">
-                <ColorClient data={formattedColors} />
+                <DescriptionClient data={formattedDescriptions} />
             </div>
         </div>
     )
 }
 
-export default ColorsPage;
+export default DescriptionPage;

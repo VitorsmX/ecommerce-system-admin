@@ -1,7 +1,7 @@
 "use client"
 
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { ColorColumn } from "./columns";
+import { DescriptionColumn } from "./columns";
 import { Button } from "@/components/ui/button";
 import { Copy, Edit, MoreHorizontal, Trash } from "lucide-react";
 import toast from "react-hot-toast";
@@ -11,7 +11,7 @@ import { useState } from "react";
 import { AlertModal } from "@/components/modals/alert-modal";
 
 interface CellActionProps {
-    data: ColorColumn;
+    data: DescriptionColumn;
 }
 
 export const CellAction: React.FC<CellActionProps> = ({
@@ -26,17 +26,17 @@ export const CellAction: React.FC<CellActionProps> = ({
 
     const onCopy = (id: string) => {
         navigator.clipboard.writeText(id);
-        toast.success("ID da cor copiada para a área de transferência.")
+        toast.success("ID da descrição copiada para a área de transferência.")
     };
 
     const onConfirm = async () => {
         try {
           setLoading(true);
-          await axios.delete(`/api/${params.storeId}/colors/${data.id}`);
-          toast.success('Cor Deletada');
+          await axios.delete(`/api/${params.storeId}/descriptions/${data.id}`);
+          toast.success('Descrição Deletada');
           router.refresh();
         } catch (error) {
-          toast.error('Certifique-se de que removeu todos os produtos usando essa cor primeiro');
+          toast.error('Certifique-se de que removeu todos os produtos usando essa descrição primeiro');
         } finally {
           setOpen(false);
           setLoading(false);
@@ -66,7 +66,7 @@ export const CellAction: React.FC<CellActionProps> = ({
                         <Copy className="mr-2 h-4 w-4" />
                         Copiar ID
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => router.push(`/${params.storeId}/colors/${data.id}`)}>
+                    <DropdownMenuItem onClick={() => router.push(`/${params.storeId}/descriptions/${data.id}`)}>
                         <Edit className="mr-2 h-4 w-4" />
                         Alterar
                     </DropdownMenuItem>

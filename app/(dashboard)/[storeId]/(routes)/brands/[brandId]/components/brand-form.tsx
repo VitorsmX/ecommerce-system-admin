@@ -1,7 +1,7 @@
 "use client"
 
 import * as z from "zod";
-import { Color } from "@prisma/client";
+import { Brand } from "@prisma/client";
 import { Trash } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -19,18 +19,15 @@ import { AlertModal } from "@/components/modals/alert-modal";
 
 const formSchema = z.object({
     name: z.string().min(1),
-    value: z.string().min(4).regex(/^#/, {
-        message: 'O valor textual deve ser um código HEX válido'
-    }),
 })
 
-interface ColorFormProps {
-    initialData: Color | null;
+interface BrandFormProps {
+    initialData: Brand | null;
 }
 
-type ColorFormValues = z.infer<typeof formSchema>
+type BrandFormValues = z.infer<typeof formSchema>
 
-export const ColorForm: React.FC<ColorFormProps> = ({
+export const BrandForm: React.FC<BrandFormProps> = ({
     initialData
 }) => {
 
@@ -40,29 +37,28 @@ export const ColorForm: React.FC<ColorFormProps> = ({
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
 
-    const title = initialData ? "Editar cor" : "Criar cor";
-    const description = initialData ? "Editar uma cor" : "Criar uma nova cor"
-    const toastMessage = initialData ? "Cor Modificada" : "Cor Criada"
+    const title = initialData ? "Editar marca" : "Criar marca";
+    const description = initialData ? "Editar uma marca" : "Criar uma nova marca"
+    const toastMessage = initialData ? "Marca Modificada" : "Marca Criada"
     const action = initialData ? "Salvar Alterações" : "Criar"
 
-    const form = useForm<ColorFormValues>({
+    const form = useForm<BrandFormValues>({
         resolver: zodResolver(formSchema),
         defaultValues: initialData || {
             name: '',
-            value: ''
         }
     });
 
-    const onSubmit = async (data: ColorFormValues) => {
+    const onSubmit = async (data: BrandFormValues) => {
         try {
             setLoading(true);
             if (initialData) {
-                await axios.patch(`/api/${params.storeId}/colors/${params.colorId}`, data);
+                await axios.patch(`/api/${params.storeId}/brands/${params.brandId}`, data);
             } else {
-                await axios.post(`/api/${params.storeId}/colors`, data);
+                await axios.post(`/api/${params.storeId}/brands`, data);
             }
             router.refresh();
-            router.push(`/${params.storeId}/colors`)
+            router.push(`/${params.storeId}/brands`)
             toast.success(toastMessage);
         } catch (error) {
             toast.error("Algo deu errado.");
@@ -74,12 +70,12 @@ export const ColorForm: React.FC<ColorFormProps> = ({
     const onDelete = async () => {
         try {
             setLoading(true)
-            await axios.delete(`/api/${params.storeId}/colors/${params.colorId}`)
+            await axios.delete(`/api/${params.storeId}/brands/${params.brandId}`)
             router.refresh();
-            router.push(`/${params.storeId}/colors`)
-            toast.success("Cor deletada.");
+            router.push(`/${params.storeId}/brands`)
+            toast.success("Marca deletada.");
         } catch (error) {
-            toast.error("Certique-se de que você removeu todos os produtos usando essa cor primeiro.")
+            toast.error("Certique-se de que você removeu todos os produtos usando essa marca primeiro.")
         } finally {
             setLoading(false)
             setOpen(false)
@@ -121,26 +117,7 @@ export const ColorForm: React.FC<ColorFormProps> = ({
                                 <FormItem>
                                     <FormLabel>Nome</FormLabel>
                                     <FormControl>
-                                        <Input disabled={loading} placeholder="Nome da cor" {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="value"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Valor</FormLabel>
-                                    <FormControl>
-                                        <div className="flex items-center gap-x-4">
-                                            <Input disabled={loading} placeholder="Valor da cor" {...field} />
-                                            <div
-                                                className="border p-4 rounded-full"
-                                                style={{ backgroundColor: field.value }}
-                                            />
-                                        </div>
+                                        <Input disabled={loading} placeholder="Nome da Marca" {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>

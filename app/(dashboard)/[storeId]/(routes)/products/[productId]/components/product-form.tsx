@@ -1,7 +1,7 @@
 "use client"
 
 import * as z from "zod";
-import { Category, Color, Image, Product, Size } from "@prisma/client";
+import { Category, Brand, Image, Product, Size, Description } from "@prisma/client";
 import { Trash } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -27,7 +27,8 @@ const formSchema = z.object({
     }).array(),
     price: z.coerce.number().min(1),
     categoryId: z.string().min(1),
-    colorId: z.string().min(1),
+    brandId: z.string().min(1),
+    descriptionId: z.string().min(1),
     sizeId: z.string().min(1),
     isFeatured: z.boolean().default(false).optional(),
     isArchived: z.boolean().default(false).optional(),
@@ -38,7 +39,8 @@ interface ProductFormProps {
         images: Image[]
     } | null;
     categories: Category[];
-    colors: Color[];
+    brands: Brand[];
+    descriptions: Description[];
     sizes: Size[];
 }
 
@@ -47,7 +49,8 @@ type ProductFormValues = z.infer<typeof formSchema>
 export const ProductForm: React.FC<ProductFormProps> = ({
     initialData,
     categories,
-    colors,
+    brands,
+    descriptions,
     sizes
 }) => {
 
@@ -72,7 +75,8 @@ export const ProductForm: React.FC<ProductFormProps> = ({
             images: [],
             price: 0,
             categoryId: '',
-            colorId: '',
+            brandId: '',
+            descriptionId: '',
             sizeId: '',
             isFeatured: false,
             isArchived: false
@@ -225,7 +229,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
                             name="sizeId"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Tamanho</FormLabel>
+                                    <FormLabel>Tamanho / Volume</FormLabel>
                                     <Select
                                         disabled={loading}
                                         onValueChange={field.onChange}
@@ -236,7 +240,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
                                             <SelectTrigger>
                                                 <SelectValue
                                                     defaultValue={field.value}
-                                                    placeholder="Selecione um tamanho"
+                                                    placeholder="Selecione um tamanho/ volume"
                                                 />
                                             </SelectTrigger>
                                         </FormControl>
@@ -255,13 +259,13 @@ export const ProductForm: React.FC<ProductFormProps> = ({
                                 </FormItem>
                             )}
                         />
-                        {/*cores*/}
+                        {/*marcas*/}
                         <FormField
                             control={form.control}
-                            name="colorId"
+                            name="brandId"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Cor</FormLabel>
+                                    <FormLabel>Marca</FormLabel>
                                     <Select
                                         disabled={loading}
                                         onValueChange={field.onChange}
@@ -272,17 +276,53 @@ export const ProductForm: React.FC<ProductFormProps> = ({
                                             <SelectTrigger>
                                                 <SelectValue
                                                     defaultValue={field.value}
-                                                    placeholder="Selecione uma cor"
+                                                    placeholder="Selecione uma marca"
                                                 />
                                             </SelectTrigger>
                                         </FormControl>
                                         <SelectContent>
-                                            {colors.map((color) => (
+                                            {brands.map((brand) => (
                                                 <SelectItem
-                                                    key={color.id}
-                                                    value={color.id}
+                                                    key={brand.id}
+                                                    value={brand.id}
                                                 >
-                                                    {color.name}
+                                                    {brand.name}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        {/* descrições */}
+                        <FormField
+                            control={form.control}
+                            name="descriptionId"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Descrição</FormLabel>
+                                    <Select
+                                        disabled={loading}
+                                        onValueChange={field.onChange}
+                                        value={field.value}
+                                        defaultValue={field.value}
+                                    >
+                                        <FormControl>
+                                            <SelectTrigger>
+                                                <SelectValue
+                                                    defaultValue={field.value}
+                                                    placeholder="Selecione uma descrição"
+                                                />
+                                            </SelectTrigger>
+                                        </FormControl>
+                                        <SelectContent>
+                                            {descriptions.map((description) => (
+                                                <SelectItem
+                                                    key={description.id}
+                                                    value={description.id}
+                                                >
+                                                    {description.description}
                                                 </SelectItem>
                                             ))}
                                         </SelectContent>

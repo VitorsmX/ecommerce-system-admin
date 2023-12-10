@@ -28,7 +28,13 @@ const ProductPage = async ({
         }
     })
 
-    const colors = await prismadb.color.findMany({
+    const brands = await prismadb.brand.findMany({
+        where: {
+            storeId: params.storeId
+        }
+    })
+
+    const descriptions = await prismadb.description.findMany({
         where: {
             storeId: params.storeId
         }
@@ -39,7 +45,8 @@ const ProductPage = async ({
             <div className="flex-1 space-y-4 p-8 pt-6">
                 <ProductForm
                     categories={categories}
-                    colors={colors}
+                    brands={brands}
+                    descriptions={descriptions}
                     sizes={sizes}
                     initialData={product}
                 />
