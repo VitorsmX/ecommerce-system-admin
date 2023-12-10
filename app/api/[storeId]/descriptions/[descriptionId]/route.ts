@@ -81,7 +81,7 @@ export async function PATCH (
             }
         });
 
-        return NextResponse.json(descriptionUnique);
+        return NextResponse.json({ description: descriptionUnique });
 
     } catch (error) {
         console.log('[DESCRIPTION_PATCH]', error);
