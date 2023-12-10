@@ -18,7 +18,7 @@ import { useParams, useRouter } from "next/navigation";
 import { AlertModal } from "@/components/modals/alert-modal";
 
 const formSchema = z.object({
-    description: z.string().min(1).max(600),
+    description: z.string().min(1).max(1200),
 })
 
 interface DescriptionFormProps {
