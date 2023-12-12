@@ -13,6 +13,7 @@ export type OrderColumn = {
   products: string;
   createdAt: string;
   orderItems: OrderItem[];
+  quantity: string;
 }
 
 export const columns: ColumnDef<OrderColumn>[] = [
@@ -33,11 +34,12 @@ export const columns: ColumnDef<OrderColumn>[] = [
     header: "Preço total",
   },
   {
-    accessorKey: "isPaid",
-    header: "Pago",
+    accessorKey: "quantity",
+    header: "Quantidade Total"
   },
   {
-    accessorKey: "orderItems"
+    accessorKey: "isPaid",
+    header: "Pago",
   },
   {
     id: "actions",

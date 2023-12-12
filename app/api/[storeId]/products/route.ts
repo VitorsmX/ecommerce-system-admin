@@ -11,7 +11,7 @@ export async function POST (
         const { userId } = auth();
         const body = await req.json()
 
-        const { name, price, categoryId, brandId, descriptionId, sizeId, images, isFeatured, isArchived } = body;
+        const { name, price, categoryId, brandId, descriptionId, sizeId, images, isFeatured, isArchived, quantity } = body;
 
         if (!userId) {
             return new NextResponse("Unauthenticated", { status: 401 })
@@ -19,6 +19,10 @@ export async function POST (
 
         if (!name) {
             return new NextResponse("Name is required", { status: 400 })
+        }
+
+        if (!quantity) {
+            return new NextResponse("Quantity is required", { status: 400 })
         }
 
         if(!images || !images.length) {
@@ -77,7 +81,8 @@ export async function POST (
                             ...images.map((image: { url: string } ) => image)
                         ]
                     }
-                }
+                },
+                quantity,
             }
         })
 

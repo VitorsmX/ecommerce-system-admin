@@ -105,6 +105,7 @@ model Product {
   descriptionId String
   description Description @relation(fields: [descriptionId], references: [id])
   images Image[]
+  quantity Int
   orderItems OrderItem[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -147,6 +148,7 @@ model OrderItem {
   order Order @relation(fields: [orderId], references: [id])
   productId String
   product Product @relation(fields: [productId], references: [id])
+  orderQuantity Int
 
   @@index([orderId])
   @@index([productId])

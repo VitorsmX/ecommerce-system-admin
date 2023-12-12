@@ -3,6 +3,16 @@ import { NextResponse } from "next/server";
 
 import { stripe } from "@/lib/stripe";
 import prismadb from "@/lib/prismadb";
+import { Product } from "@prisma/client";
+
+type ProductItem = {
+    id: string;
+    itemQuantity: number;
+  };
+
+type ResponseBody = {
+    productIds: ProductItem[];
+};
 
 const corsHeaders = {
     "Access-Control-Allow-Origin": "*",
@@ -18,29 +28,45 @@ export async function POST(
     req: Request,
     { params }: { params: { storeId: string } }
 ) {
-    const { productIds } = await req.json();
+    const response = await req.json() as ResponseBody;
+    const { productIds } = response;
 
-    if(!productIds || productIds.length === 0) {
+    // const { productIds: { id, itemQuantity } } = await req.json();
+
+    if(!productIds || productIds.length === 0 || !productIds.find(e => e.id)) {
         return new NextResponse("Product ids are required", { status: 400 });
+    }
+
+    if(!productIds.find(e => e.itemQuantity)) {
+        return new NextResponse("Item quantity required", { status: 400 });
+    }
+
+    if (productIds.find(e => e.itemQuantity === 0)) {
+        return new NextResponse("Item quantity must be different of zero", { status: 400 });
     }
 
     const products = await prismadb.product.findMany({
         where: {
             id: { 
-                in: productIds
+                in: productIds.map(e => e.id)
              }
         }
     });
 
     const line_items: Stripe.Checkout.SessionCreateParams.LineItem[] = [];
 
+    const getProductQuantity = (products: ProductItem[], productId: Product["id"] ) => {
+        return products.filter(prod => prod.id === productId).map(productItem => productItem.itemQuantity)[0]
+    }
+
     products.forEach((product) => {
         line_items.push({
-            quantity: 1,
+            quantity: getProductQuantity(productIds, product.id),
             price_data: {
                 currency: 'BRL',
                 product_data: {
-                    name: product.name
+                    name: product.name,
+                    description: `O Produto ${product.name} está sendo comprado na quantidade de ${getProductQuantity(productIds, product.id)}`
                 },
                 unit_amount: product.price.toNumber() * 100
             }
@@ -52,12 +78,13 @@ export async function POST(
             storeId: params.storeId,
             isPaid: false,
             orderItems: {
-                create: productIds.map((productId: string) => ({
+                create: productIds.map((product) => ({
                     product: {
                         connect: {
-                            id: productId
+                            id: product.id
                         }
-                    }
+                    },
+                    orderQuantity: product.itemQuantity
                 }))
             }
         }

@@ -36,6 +36,7 @@ const ProductsPage = async ({
         size: item.size.name,
         brand: item.brand.name,
         description: item.description.description,
+        quantity: item.quantity,
         createdAt: format(item.createdAt, "MMMM do, yyyy")
 
     }))

@@ -32,6 +32,7 @@ const formSchema = z.object({
     sizeId: z.string().min(1),
     isFeatured: z.boolean().default(false).optional(),
     isArchived: z.boolean().default(false).optional(),
+    quantity: z.number().default(0)
 })
 
 interface ProductFormProps {
@@ -79,7 +80,8 @@ export const ProductForm: React.FC<ProductFormProps> = ({
             descriptionId: '',
             sizeId: '',
             isFeatured: false,
-            isArchived: false
+            isArchived: false,
+            quantity: 0
         }
     });
 
@@ -291,6 +293,20 @@ export const ProductForm: React.FC<ProductFormProps> = ({
                                             ))}
                                         </SelectContent>
                                     </Select>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        {/*quantidade inicial em estoque*/}
+                        <FormField
+                            control={form.control}
+                            name="quantity"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Quantidade Em Estoque</FormLabel>
+                                    <FormControl>
+                                        <Input type="number" disabled={loading} placeholder="0" {...field} />
+                                    </FormControl>
                                     <FormMessage />
                                 </FormItem>
                             )}

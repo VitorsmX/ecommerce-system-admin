@@ -59,7 +59,7 @@ export const CellAction: React.FC<CellActionProps> = ({
                     </DropdownMenuLabel>
                     <DropdownMenuItem onClick={() => setOpen(true)}>
                         <Trash className="mr-2 h-4 w-4" />
-                        Apagar
+                        Apagar Pedido Concluído
                     </DropdownMenuItem>
                 </DropdownMenuContent>
             </DropdownMenu>
