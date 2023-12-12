@@ -32,7 +32,7 @@ const formSchema = z.object({
     sizeId: z.string().min(1),
     isFeatured: z.boolean().default(false).optional(),
     isArchived: z.boolean().default(false).optional(),
-    quantity: z.number().default(0)
+    quantity: z.coerce.number().min(1),
 })
 
 interface ProductFormProps {
@@ -70,7 +70,8 @@ export const ProductForm: React.FC<ProductFormProps> = ({
         resolver: zodResolver(formSchema),
         defaultValues: initialData ? {
             ...initialData,
-            price: parseFloat(String(initialData?.price))
+            price: parseFloat(String(initialData?.price)),
+            quantity: parseInt(String(initialData?.quantity)),
         } : {
             name: '',
             images: [],

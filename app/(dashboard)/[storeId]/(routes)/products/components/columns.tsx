@@ -13,7 +13,7 @@ export type ProductColumn = {
   description: string;
   isFeatured: boolean;
   isArchived: boolean;
-  quantity: number;
+  quantity: string;
   createdAt: string;
 }
 
