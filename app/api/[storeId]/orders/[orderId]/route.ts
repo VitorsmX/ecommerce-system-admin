@@ -39,21 +39,35 @@ export async function POST(
             return new NextResponse("Unauthorized", { status: 403 })
         }
 
-        await Promise.all(orderItems.map(async (orderItem: OrderItem) => {
-            await prismadb.orderItem.deleteMany({
+        const order = await prismadb.order.findUnique({
+            where: {
+                id: params.orderId
+            },
+            include: {
+                orderItems: true
+            }
+        })
+
+        if (!order) {
+            return new NextResponse("Order not found", { status: 404 })
+        }
+
+        await Promise.all(order.orderItems.map(async (orderItem: OrderItem) => {
+            await prismadb.orderItem.delete({
                 where: {
+                    id: orderItem.id,
                     productId: orderItem.productId,
                 }
             });
         }))
 
-        const order = await prismadb.order.delete({
-                where: {
-                    id: params.orderId
-                }
-            })
+        await prismadb.order.delete({
+            where: {
+                id: params.orderId
+            }
+        })
 
-        return NextResponse.json(order)
+        return new NextResponse("Order deleted successfully", { status: 200 })
 
     } catch (error) {
         console.log(`[ORDER_POST(DELETE)`, error);
