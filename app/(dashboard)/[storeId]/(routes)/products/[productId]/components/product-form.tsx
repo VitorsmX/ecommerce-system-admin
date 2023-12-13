@@ -89,7 +89,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
     const onSubmit = async (data: ProductFormValues) => {
         try {
             setLoading(true);
-            if(initialData) {
+            if (initialData) {
                 await axios.patch(`/api/${params.storeId}/products/${params.productId}`, data);
             } else {
                 await axios.post(`/api/${params.storeId}/products`, data);
@@ -118,7 +118,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
             setOpen(false)
         }
     }
-    
+
     return (
         <>
             <AlertModal
@@ -153,11 +153,11 @@ export const ProductForm: React.FC<ProductFormProps> = ({
                             <FormItem>
                                 <FormLabel>Imagens</FormLabel>
                                 <FormControl>
-                                    <ImageUpload 
-                                    value={field.value.map((image) => image.url)}
-                                    disabled={loading}
-                                    onChange={(url) => field.onChange([...field.value, { url }])}
-                                    onRemove={(url) => field.onChange([...field.value.filter((current) => current.url !== url)])}
+                                    <ImageUpload
+                                        value={field.value.map((image) => image.url)}
+                                        disabled={loading}
+                                        onChange={(url) => field.onChange([...field.value, { url }])}
+                                        onRemove={(url) => field.onChange([...field.value.filter((current) => current.url !== url)])}
                                     />
                                 </FormControl>
                                 <FormMessage />
@@ -306,12 +306,23 @@ export const ProductForm: React.FC<ProductFormProps> = ({
                                 <FormItem>
                                     <FormLabel>Quantidade Em Estoque</FormLabel>
                                     <FormControl>
-                                        <Input type="number" disabled={loading} placeholder="0" {...field} />
+                                        <Input
+                                            type="number"
+                                            disabled={loading}
+                                            placeholder="0"
+                                            {...field}
+                                            onChange={(e) => {
+                                                // Remove zeros à esquerda
+                                                e.target.value = e.target.value.replace(/^0+/, '');
+                                                field.onChange(e);
+                                            }}
+                                        />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
                             )}
                         />
+
                         {/* descrições */}
                         <FormField
                             control={form.control}
@@ -355,7 +366,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
                             render={({ field }) => (
                                 <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
                                     <FormControl>
-                                        <Checkbox 
+                                        <Checkbox
                                             checked={field.value}
                                             onCheckedChange={field.onChange}
                                         />
@@ -378,7 +389,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
                             render={({ field }) => (
                                 <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
                                     <FormControl>
-                                        <Checkbox 
+                                        <Checkbox
                                             checked={field.value}
                                             onCheckedChange={field.onChange}
                                         />
@@ -393,7 +404,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
                                     </div>
                                 </FormItem>
                             )}
-                        /> 
+                        />
                     </div>
                     <Button disabled={loading} className="ml-auto" type="submit">{action}</Button>
                 </form>
