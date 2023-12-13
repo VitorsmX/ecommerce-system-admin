@@ -4,6 +4,7 @@ import prismadb from "@/lib/prismadb";
 import { ProductClient } from "./components/client";
 import { ProductColumn } from "./components/columns";
 import { formatter } from "@/lib/utils";
+import { StringXor } from "next/dist/compiled/webpack/webpack";
 
 const ProductsPage = async ({
     params
@@ -36,7 +37,7 @@ const ProductsPage = async ({
         size: item.size.name,
         brand: item.brand.name,
         description: item.description.description,
-        quantity: item.quantity,
+        quantity: item.quantity.toString(),
         createdAt: format(item.createdAt, "MMMM do, yyyy")
 
     }))
