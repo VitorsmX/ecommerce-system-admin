@@ -40,7 +40,9 @@ const OrdersPage = async ({
         isPaid: item.isPaid,
         createdAt: format(item.createdAt, "MMMM do, yyyy"),
         orderItems: item.orderItems.map((orderItem) => orderItem),
-        quantity: item.orderItems.map((orderItem) => orderItem.product.id).length.toString()
+        quantity: item.orderItems.reduce((total, orderItem) => {
+            return total + orderItem.orderQuantity
+        }, 0).toString()
     }))
 
     return (
