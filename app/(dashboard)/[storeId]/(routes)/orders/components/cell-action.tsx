@@ -31,7 +31,7 @@ export const CellAction: React.FC<CellActionProps> = ({
           toast.success('Pedido deletado');
           router.refresh();
         } catch (error) {
-          toast.error("Algo deu errado. Verifique se há pedidos para esse produto em andamento");
+          toast.error("Algo deu errado.");
         } finally {
           setOpen(false);
           setLoading(false);
