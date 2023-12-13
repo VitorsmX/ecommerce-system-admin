@@ -14,6 +14,7 @@ export type OrderColumn = {
   createdAt: string;
   orderItems: OrderItem[];
   quantity: string;
+  quantityPerItem: string;
 }
 
 export const columns: ColumnDef<OrderColumn>[] = [
@@ -34,8 +35,13 @@ export const columns: ColumnDef<OrderColumn>[] = [
     header: "Preço total",
   },
   {
+    accessorKey: "quantityPerItem",
+    header: "Quantidade por Item",
+    cell: ({ row }) => <div className="p-2 m-1 bg-neutral-600 text-white border-[2px] rounded-sm border-black">{row.original.quantityPerItem}</div>
+  },
+  {
     accessorKey: "quantity",
-    header: "Quantidade Total"
+    header: "Total de items"
   },
   {
     accessorKey: "isPaid",

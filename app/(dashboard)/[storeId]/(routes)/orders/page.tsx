@@ -42,7 +42,8 @@ const OrdersPage = async ({
         orderItems: item.orderItems.map((orderItem) => orderItem),
         quantity: item.orderItems.reduce((total, orderItem) => {
             return total + orderItem.orderQuantity
-        }, 0).toString()
+        }, 0).toString(),
+        quantityPerItem: item.orderItems.map((orderItem) => `--Nome: ${orderItem.product.name}\nQuantidade: ${orderItem.orderQuantity}--`).join('\n\n')
     }))
 
     return (
