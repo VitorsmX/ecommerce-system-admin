@@ -316,6 +316,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
                                                 e.target.value = e.target.value.replace(/^0+/, '');
                                                 field.onChange(e);
                                             }}
+                                            min={0}
                                         />
                                     </FormControl>
                                     <FormMessage />
