@@ -37,7 +37,7 @@ export const columns: ColumnDef<OrderColumn>[] = [
   {
     accessorKey: "quantityPerItem",
     header: "Quantidade por Item",
-    cell: ({ row }) => <div className="flex items-center p-2 m-1 bg-neutral-600 text-white border-[2px] rounded-sm border-black">{row.original.quantityPerItem}</div>
+    cell: ({ row }) => <div className="w-16 flex-col items-center p-2 m-1 bg-neutral-300 text-black border-[2px] rounded-sm border-black">{row.original.quantityPerItem}</div>
   },
   {
     accessorKey: "quantity",
