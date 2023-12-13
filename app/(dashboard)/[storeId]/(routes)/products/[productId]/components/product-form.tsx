@@ -112,7 +112,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
             router.push(`/${params.storeId}/products`)
             toast.success("Produto deletado.");
         } catch (error: any) {
-            toast.error("Algo deu errado. Verifique se há pedidos em andamento")
+            toast.error("Algo deu errado. Verifique se há pedidos para esse produto em andamento")
         } finally {
             setLoading(false)
             setOpen(false)
