@@ -19,7 +19,7 @@ const corsHeaders = {
     return NextResponse.json({}, { headers: corsHeaders });
   }
 
-export async function POST(
+export async function GET(
     req: Request,
     { params }: { params: { storeId: string, paymentId: string, preferenceId: string } }
 ) {
