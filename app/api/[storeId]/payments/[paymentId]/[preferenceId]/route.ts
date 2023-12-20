@@ -85,15 +85,15 @@ export async function GET(
                 }
             })
 
-            return new NextResponse(null, { status: 200 })
+            return NextResponse.json({id: UniquePreference.id}, { status: 200 })
         } else {
-            return new NextResponse('[PAYMENTS_POST]: Unauthorized: not paid yet', { status: 401 })
+            return NextResponse.json('[PAYMENTS_POST]: Unauthorized: not paid yet', { status: 401 })
         }
     } else {
-        return new NextResponse('[PAYMENTS_POST]: Payment Not Found', { status: 404 })
+        return NextResponse.json('[PAYMENTS_POST]: Payment Not Found', { status: 404 })
     }
 
     } catch (error) {
-        return new NextResponse(`[PAYMENTS_POST]: ${error}`, { status: 500 })
+        return NextResponse.json(`[PAYMENTS_POST]: ${error}`, { status: 500 })
     }
 }

@@ -5,6 +5,7 @@ import { MercadoPagoConfig, Preference } from 'mercadopago';
 import { v4 as uuidv4 } from 'uuid'
 import { PreferenceRequest } from "mercadopago/dist/clients/preference/commonTypes";
 import { Items } from "mercadopago/dist/clients/commonTypes";
+import axios from "axios";
 
 const client = new MercadoPagoConfig({ accessToken: process.env.MERCADO_PAGO_SAMPLE_ACCESS_TOKEN!, options: { timeout: 5000, idempotencyKey: uuidv4() } });
 
@@ -120,7 +121,7 @@ export async function POST(
 
         const backEndBaseURL = `${process.env.NEXT_PUBLIC_API_URL}/payments/${preferenceResponse.payer?.identification?.number}/${preferenceResponse.id}`
 
-        const responsePaymentUpdate = await fetch(`${backEndBaseURL}`)
+        const responsePaymentUpdate = await axios.get(`${backEndBaseURL}`)
 
         if(responsePaymentUpdate.status === 200) {
             return NextResponse.json({
@@ -128,7 +129,7 @@ export async function POST(
             });
         } else {
             return NextResponse.json({
-                id: JSON.stringify(responsePaymentUpdate.json())   
+                id: responsePaymentUpdate.statusText
             });
         }
     } catch (error) {
