@@ -119,21 +119,12 @@ export async function POST(
             }
         })
 
-        const backEndBaseURL = `${process.env.NEXT_PUBLIC_API_URL}/payments/${preferenceResponse.payer?.identification?.number}/${preferenceResponse.id}`
-
-        const responsePaymentUpdate = await axios.get(`${backEndBaseURL}`)
-
-        if(responsePaymentUpdate.status === 200) {
-            return NextResponse.json({
-                id: preferenceResponse.id
-            });
-        } else {
-            return NextResponse.json({
-                id: responsePaymentUpdate.statusText
-            });
-        }
+        return NextResponse.json({
+            id: preferenceResponse.id
+        });
     } catch (error) {
         console.log(error);
         return new NextResponse(`[PREFERENCES_POST] ${error}`, { status: 500 });
     }
 }
+
