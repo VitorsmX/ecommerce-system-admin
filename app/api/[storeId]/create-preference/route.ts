@@ -58,7 +58,8 @@ export async function POST(
             }
         },
         include: {
-            description: true
+            description: true,
+            images: true
         }
     });
 
@@ -73,8 +74,8 @@ export async function POST(
             id: product.id,
             title: product.name,
             currency_id: "BRL",
-            picture_url: "https://www.mercadopago.com/org-img/MP3/home/logomp3.gif",
-            description: `O Produto de nome "${product.name}" está sendo comprado na quantidade de ${getProductQuantity(productIds, product.id)}`,
+            picture_url: product.images[0].url,
+            description: `${product.name}: ${getProductQuantity(productIds, product.id)}`,
             category_id: product.categoryId,
             quantity: getProductQuantity(productIds, product.id),
             unit_price: parseFloat(product.price.toString())
