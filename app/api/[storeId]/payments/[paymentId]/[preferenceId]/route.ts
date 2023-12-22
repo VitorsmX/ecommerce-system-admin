@@ -36,7 +36,7 @@ export async function GET(
             sort: 'date_created',
             external_reference: 'ID_REF'
         }
-    }).then(e => e.results?.filter(e => (e.payer?.identification.number === params.paymentId)))
+    }).then(e => e.results?.filter(e => (e.id === params.paymentId)))
 
     if (UniquePayment) {
         const preferenceResponseIsPaid = UniquePayment[0].status === "approved" ? UniquePayment[0] : null
@@ -85,7 +85,12 @@ export async function GET(
                 }
             })
 
-            return NextResponse.json({id: UniquePreference.id}, { status: 200 })
+            return NextResponse.json({
+                id: UniquePreference.id,
+                userName: `${UniquePreference.payer?.name} ${UniquePreference.payer?.surname}`,
+                address: `Rua ${UniquePreference.payer?.address?.street_name}, Número da rua ${UniquePreference.payer?.address?.street_number}, Código postal ${UniquePreference.payer?.address?.zip_code}`,
+                value: UniquePayment.map(e => e.transaction_details?.total_paid_amount)[0]?.toString()
+            }, { status: 200 })
         } else {
             return NextResponse.json('[PAYMENTS_POST]: Unauthorized: not paid yet', { status: 401 })
         }
