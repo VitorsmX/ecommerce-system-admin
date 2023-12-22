@@ -6,6 +6,16 @@ import { v4 as uuidv4 } from 'uuid'
 import { PreferenceRequest } from "mercadopago/dist/clients/preference/commonTypes";
 import { Items } from "mercadopago/dist/clients/commonTypes";
 
+const corsHeaders = {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type, Authorization",
+  };
+  
+  export async function OPTIONS() {
+    return NextResponse.json({}, { headers: corsHeaders });
+  }
+
 const client = new MercadoPagoConfig({ accessToken: process.env.MERCADO_PAGO_SAMPLE_ACCESS_TOKEN!, options: { timeout: 5000, idempotencyKey: uuidv4() } });
 
 const preference = new Preference(client);
