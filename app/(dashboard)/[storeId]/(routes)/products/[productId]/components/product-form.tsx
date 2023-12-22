@@ -98,7 +98,8 @@ export const ProductForm: React.FC<ProductFormProps> = ({
             router.push(`/${params.storeId}/products`)
             toast.success(toastMessage);
         } catch (error) {
-            toast.error("Algo deu errado.");
+            toast.error(`Algo deu errado. ${error}`);
+            console.log(error)
         } finally {
             setLoading(false);
         }
