@@ -39,7 +39,7 @@ export async function GET(
         if (preferenceResponse && preferenceResponse.items) {
             return NextResponse.json({
                 id: preferenceResponse.id,
-                productNames: `${preferenceResponse.items.map(e => e.title).join(", ")}`,
+                productNames: `${preferenceResponse.items.map(e => e.title).join(", ")}` || " ",
             });
         }
     } catch (error) {
