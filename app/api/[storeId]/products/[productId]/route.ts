@@ -172,6 +172,6 @@ export async function PATCH(
     return NextResponse.json(product);
   } catch (error) {
     console.log('[PRODUCT_PATCH]', error);
-    return new NextResponse("Internal error", { status: 500 });
+    return new NextResponse(`Internal error ${error}`, { status: 500 });
   }
 };
