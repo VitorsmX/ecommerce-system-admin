@@ -41,6 +41,11 @@ export async function GET(
                 id: preferenceResponse.id,
                 productNames: `${preferenceResponse.items.map(e => e.title).join(", ")}` || " ",
             });
+        } else {
+            return NextResponse.json({
+                id: preferenceResponse.id,
+                productNames: "0",
+            });
         }
     } catch (error) {
         console.log(error);
