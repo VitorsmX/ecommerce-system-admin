@@ -10,7 +10,7 @@ const client = new MercadoPagoConfig({ accessToken: process.env.MERCADO_PAGO_SAM
 
 const preference = new Preference(client);
 
-export async function POST(
+export async function GET(
     req: Request,
     { params }: { params: { storeId: string, preferenceId: string } }
 ) {
