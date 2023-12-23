@@ -1,13 +1,8 @@
 {
-    "headers": [
+    "routes": [
       {
-        "source": "/:path*",
-        "headers": [
-          {
-            "key": "Access-Control-Allow-Methods",
-            "value": "*"
-          }
-        ]
+        "src": "/api/(.*)",
+        "headers": { "Access-Control-Allow-Methods": "GET,DELETE,PATCH,POST,PUT" }
       }
     ]
   }
