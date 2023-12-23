@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs";
-
 import prismadb from "@/lib/prismadb";
 
 const corsHeaders = {
@@ -141,7 +140,7 @@ export async function PATCH(
     });
 
     if (!storeByUserId) {
-      return new NextResponse("Unauthorized", { status: 405 });
+      return new NextResponse(`Unauthorized`, { status: 200 });
     }
 
     await prismadb.product.update({
