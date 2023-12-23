@@ -1,8 +1,0 @@
-{
-    "routes": [
-      {
-        "src": "/api/(.*)",
-        "headers": { "Access-Control-Allow-Methods": "GET,DELETE,PATCH,POST,PUT" }
-      }
-    ]
-  }
