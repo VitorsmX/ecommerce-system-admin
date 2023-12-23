@@ -4,7 +4,7 @@ import prismadb from "@/lib/prismadb";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Methods": "GET, DELETE, PATCH, POST, PUT",
+  "Access-Control-Allow-Methods": "*",
   "Access-Control-Allow-Headers": "Content-Type",
 };
 
