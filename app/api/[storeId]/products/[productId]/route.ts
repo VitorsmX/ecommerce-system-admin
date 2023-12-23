@@ -5,7 +5,7 @@ import prismadb from "@/lib/prismadb";
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Methods": "GET, DELETE, PATCH, POST, PUT",
-  "Access-Control-Allow-Headers": "Content-Type, Authorization",
+  "Access-Control-Allow-Headers": "Content-Type",
 };
 
 export async function OPTIONS() {
@@ -140,7 +140,7 @@ export async function PATCH(
     });
 
     if (!storeByUserId) {
-      return new NextResponse(`Unauthorized`, { status: 200 });
+      return new NextResponse(`Unauthorized`, { status: 405 });
     }
 
     await prismadb.product.update({
