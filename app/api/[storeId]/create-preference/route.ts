@@ -97,7 +97,7 @@ export async function POST(
         },
         back_urls: {
             success: `${successURL}`,
-            failure: `${failureURL}`
+            failure: `${failureURL}`,
         }
     };
 
