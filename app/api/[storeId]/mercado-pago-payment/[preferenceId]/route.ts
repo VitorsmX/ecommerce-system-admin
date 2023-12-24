@@ -76,6 +76,8 @@ export async function POST(
                         id: data.id
                     })
 
+                    const isPaid = UniquePayment.status === "approved" ? true : false
+
                     const address = UniquePayment.payer?.address
 
                     const addressComponents = [
@@ -93,7 +95,7 @@ export async function POST(
                             id: params.preferenceId
                         },
                         data: {
-                            isPaid: true,
+                            isPaid: isPaid,
                             address: addressString || '',
                             phone: `${phone}` || ''
                         },
