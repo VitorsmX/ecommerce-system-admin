@@ -30,66 +30,23 @@ export async function GET(
 
     const payment = new Payment(client);
 
-    const UniquePayment = await payment.search({
-        options: {
-            criteria: 'desc',
-            sort: 'date_created',
-            external_reference: 'ID_REF'
-        }
-    }).then(e => e.results?.filter(e => (e.id === params.paymentId)))
+    const UniquePayment = await payment.get({
+        id: params.paymentId
+    })
 
     if (UniquePayment) {
-        const preferenceResponseIsPaid = UniquePayment[0].status === "approved" ? UniquePayment[0] : null
+        const preferenceResponseIsPaid = UniquePayment.status === "approved" ? UniquePayment : null
 
         if (preferenceResponseIsPaid) {
             const preference = new Preference(client);
 
             const UniquePreference = await preference.get({ preferenceId: `${params.preferenceId}` })
 
-            const address = UniquePreference.payer?.address
-
-            const addressComponents = [
-                address?.street_name,
-                address?.street_number,
-                address?.zip_code
-            ]
-
-            const addressString = addressComponents.filter((c) => c !== null).join(', ');
-
-            const phone = UniquePreference.payer?.phone
-
-            const order = await prismadb.order.update({
-                where: {
-                    id: UniquePreference.id
-                },
-                data: {
-                    isPaid: true,
-                    address: addressString,
-                    phone: `${phone?.area_code} ${phone?.number}` || ''
-                },
-                include: {
-                    orderItems: true,
-                }
-            })
-
-            const productIds = order.orderItems.map((orderItem) => orderItem.productId);
-
-            await prismadb.product.updateMany({
-                where: {
-                    id: {
-                        in: [...productIds]
-                    }
-                },
-                data: {
-                    isArchived: true
-                }
-            })
-
             return NextResponse.json({
                 id: UniquePreference.id,
                 userName: `${UniquePreference.payer?.name} ${UniquePreference.payer?.surname}`,
                 address: `Rua ${UniquePreference.payer?.address?.street_name}, Número da rua ${UniquePreference.payer?.address?.street_number}, Código postal ${UniquePreference.payer?.address?.zip_code}`,
-                value: UniquePayment.map(e => e.transaction_details?.total_paid_amount)[0]?.toString()
+                value: UniquePayment.transaction_details?.total_paid_amount?.toString()
             }, { status: 200 })
         } else {
             return NextResponse.json('[PAYMENTS_POST]: Unauthorized: not paid yet', { status: 401 })

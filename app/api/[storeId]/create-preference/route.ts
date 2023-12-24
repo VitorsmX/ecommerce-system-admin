@@ -39,6 +39,8 @@ export async function POST(
 
     // const { productIds: { id, itemQuantity } } = await req.json();
 
+    const BackEndURL = process.env.NEXT_PUBLIC_API_URL!
+
     if (!productIds || productIds.length === 0 || !productIds.find(e => e.id)) {
         return new NextResponse("Product ids are required", { status: 400 });
     }
@@ -104,6 +106,7 @@ export async function POST(
 
         await prismadb.order.create({
             data: {
+                id: preferenceResponse.id,
                 storeId: params.storeId,
                 preferenceId: preferenceResponse.id || "",
                 isPaid: false,
@@ -120,8 +123,16 @@ export async function POST(
             }
         })
 
+        const updatedPreference = await preference.update({
+            id: preferenceResponse.id as string,
+            updatePreferenceRequest: {
+                notification_url: `${BackEndURL}/mercado-pago-payment/${preferenceResponse.id}`,
+                items: items
+            }
+        })
+
         return NextResponse.json({
-            id: preferenceResponse.id
+            id: updatedPreference.id
         });
     } catch (error) {
         console.log(error);

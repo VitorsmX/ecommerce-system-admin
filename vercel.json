@@ -1,7 +1,7 @@
 {
   "routes": [
     {
-      "src": ["/((?!.+\\.[\\w]+$|_next).*)", "/", "/(api|trpc)(.*)"],
+      "src": "/api/:path*",
       "headers": {
         "Access-Control-Allow-Credentials": "true",
         "Access-Control-Allow-Origin": "*",
